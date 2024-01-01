@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camera Cart</title>
+</head>
+<body>
+
+<div id="cart">
+  <div class="item" id="camera1">
+    <span>Camera 1</span>
+    <button onclick="removeFromCart('camera1')">Remove</button>
+  </div>
+  <div class="item" id="camera2">
+    <span>Camera 2</span>
+    <button onclick="removeFromCart('camera2')">Remove</button>
+  </div>
+  <!-- Add more items as needed -->
+
+  <div id="total">Total Cameras: <span id="totalCameras">2</span></div>
+</div>
+
+<script>
+  function removeFromCart(itemId) {
+    // Remove the item from the cart
+    var itemToRemove = document.getElementById(itemId);
+    itemToRemove.parentNode.removeChild(itemToRemove);
+
+    // Update the total number of cameras
+    updateTotalCameras();
+  }
+
+  function updateTotalCameras() {
+    var totalCameras = document.querySelectorAll('.item').length;
+    document.getElementById('totalCameras').innerText = totalCameras;
+  }
+</script>
+
+</body>
+</html>
