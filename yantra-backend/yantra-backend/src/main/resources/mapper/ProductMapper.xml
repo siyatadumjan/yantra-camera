@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.online.yantra_system.mapper.ProductMapper">
+
+    <select id="getAllProducts" resultType="com.online.yantra_system.dto.response.ProductResponse">
+        select i.id                 as id,
+               i.item_name          as "itemName",
+               i.available_quantity as "availableQuantity",
+               i.description        as description,
+               i.price              as price,
+               i.image              as image,
+               i.category_id        as "categoryId",
+               c.category_name      as "categoryName"
+        from products i
+                 inner join category c on c.id = i.category_id
+    </select>
+
+    <select id="getItemById"
+            resultType="com.online.yantra_system.dto.response.ProductResponse"
+    >
+        select i.id                 as id,
+               i.item_name          as "itemName",
+               i.available_quantity as "availableQuantity",
+               i.description        as description,
+               i.price              as price,
+               i.image              as image,
+               i.category_id        as "categoryId",
+               c.category_name      as "categoryName"
+        from products i
+                 inner join category c on c.id = i.category_id
+        where i.id = #{id};
+    </select>
+
+    <select id="getProductsListByCategoryId"
+            resultType="com.online.yantra_system.dto.response.ProductResponse"
+    >
+        select i.id                 as id,
+               i.item_name          as "itemName",
+               i.available_quantity as "availableQuantity",
+               i.description        as description,
+               i.price              as price,
+               i.image              as image,
+               i.category_id        as "categoryId",
+               c.category_name      as "categoryName"
+        from products i
+                 inner join category c on c.id = i.category_id
+        where c.id = #{id};
+    </select>
+
+
+    <resultMap id="item_list"
+               type="com.online.yantra_system.dto.response.CategoryItemResponse"
+    >
+        <result property="id" column="id"/>
+        <result property="categoryName" column="categoryName"/>
+        <result property="products" column="products"/>
+
+        <!--                for one-to-many relationships use collection-->
+        <collection property="productsList" ofType="com.online.yantra_system.dto.response.ProductResponse">
+            <result property="id" column="i_id"/>
+            <result property="itemName" column="i_item_name"/>
+            <result property="availableQuantity" column="i_available_quantity"/>
+            <result property="description" column="i_description"/>
+            <result property="price" column="i_price"/>
+            <result property="image" column="i_image"/>
+        </collection>
+
+        <!--        for one-to-one relationships use association-->
+        <!--        <association property="property_name" javaType="pojo_name">-->
+        <!--            <result property="property_name" column="column_name"/>-->
+        <!--        </association>-->
+
+    </resultMap>
+
+    <select id="getAllProductsCategories"
+            resultMap="item_list"
+    >
+        select c.id                 as id,
+               c.category_name      as "categoryName",
+               i.id                 as "i_id",
+               i.item_name          as "i_item_name",
+               i.available_quantity as "i_available_quantity",
+               i.description        as "i_description",
+               i.price              as "i_price",
+               i.image              as "i_image"
+        from products i
+                 right join category c on c.id = i.category_id
+    </select>
+</mapper>
